@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 #Use Cluster0
-client = MongoClient("mongodb+srv://Javier:<Password>@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient("mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
 db = client.test
 
 
