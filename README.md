@@ -7,3 +7,6 @@ The purpose of this application is to provide a system for managing projects and
 Resource Management was built using: Python Back-End React Front-End MongoDB - Database management
 
 Files are broken down into two sections: frontend and backend, each relating to their purpose.
+
+
+** Need Server.py to connect eveyrhitng and a way of reading via JSON
