@@ -45,7 +45,7 @@ class Project:
     # updates the databases
     def update_database(self):
         client = MongoClient(
-            "mongodb+srv://test:test@cluster0.xylfgq2.mongodb.net/?retryWrites=true&w=majority")
+            "mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
         db = client["Projects"]
         collection_name = self.__id
         collection = db[collection_name]
