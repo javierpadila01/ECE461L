@@ -7,7 +7,7 @@ from pymongo import MongoClient
 
 # to access the database w/o certifi add this: &tlsAllowInvalidCertificates=true at the end of url
 client = MongoClient(
-    "mongodb+srv://test:test@cluster0.xylfgq2.mongodb.net/?retryWrites=true&w=majority")
+    "mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
 # client = MongoClient("mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
 
 
