@@ -11,7 +11,7 @@ import React, { Component } from 'react';
 class MyComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { message: 'Login to Checkout HW Sets' };
+    this.state = { message: 'Team 3 Landing Page' };
       }
 
 

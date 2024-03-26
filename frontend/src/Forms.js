@@ -8,7 +8,7 @@
  */
 import React, { useState } from 'react';
 
-function Form() {
+function Form({ label }) {
   const [inputValue, setInputValue] = useState('');
 
   /**
@@ -25,7 +25,7 @@ function Form() {
       <center>
       <form>
         <label>
-          Username: 
+         {label}:
           <input type="text" value={inputValue} onChange={handleInputChange}/>
           <br></br>
           <br></br>
