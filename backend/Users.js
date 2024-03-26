@@ -15,13 +15,13 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email }).then((user) => {
+  User.findOne({ userId: req.body.userId }).then((user) => {
     if (user) {
-      return res.status(400).json({ email: "Email already exists" });
+      return res.status(400).json({ userId: "User ID already exists" });
     } else {
       const newUser = new User({
         name: req.body.name,
-        email: req.body.email,
+        userId: req.body.userId,
         password: req.body.password,
       });
 
@@ -46,12 +46,12 @@ router.post("/login", (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const email = req.body.email;
+  const userId = req.body.userId;
   const password = req.body.password;
 
-  User.findOne({ email }).then((user) => {
+  User.findOne({ userId }).then((user) => {
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      return res.status(404).json({ userIdNotFound: "User ID not found" });
     }
 
     bcrypt.compare(password, user.password).then((isMatch) => {
@@ -75,7 +75,7 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res.status(400).json({ passwordincorrect: "Password incorrect" });
+        return res.status(400).json({ passwordIncorrect: "Password incorrect" });
       }
     });
   });
