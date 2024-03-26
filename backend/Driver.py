@@ -44,7 +44,7 @@ class Driver:
     def getSet(self, name):
         try:
             client = MongoClient(
-                "mongodb+srv://test:test@cluster0.xylfgq2.mongodb.net/?retryWrites=true&w=majority")
+                "mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
             db = client["HWSet"]
             collection = db[self.__projectID]
             setnum = collection.find_one()
@@ -60,7 +60,7 @@ class Driver:
     def addUser(self):
         try:
             client = MongoClient(
-                "mongodb+srv://test:test@cluster0.xylfgq2.mongodb.net/?retryWrites=true&w=majority")
+               "mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
             db = client["Project"]
             collection = db[self.__projectID]
             project = collection.find_one()
@@ -77,7 +77,7 @@ class Driver:
     def doesExist(self, projID):
         try:
             client = MongoClient(
-                "mongodb+srv://test:test@cluster0.xylfgq2.mongodb.net/?retryWrites=true&w=majority")
+                "mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
             db = client["Project"]
             collection = db[projID]
             project = collection.find_one()
@@ -88,7 +88,7 @@ class Driver:
     def getLogin(self):
         try:
             client = MongoClient(
-                "mongodb+srv://test:test@cluster0.xylfgq2.mongodb.net/?retryWrites=true&w=majority")
+                "mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
             db = client["Users"]
             collection = db[self.__username]
             userData = collection.find_one()
