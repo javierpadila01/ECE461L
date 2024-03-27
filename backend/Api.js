@@ -3,8 +3,8 @@ const router = express.Router();
 const User = require("../../models/User");
 const Project = require("../../models/Projects");
 router.post("/getuserdata", (req, res) => {
-  console.log(req.body.email);
-  User.findOne({ email: req.body.email }).then((user) => {
+  console.log(req.body.userId); // Logging user ID
+  User.findOne({ userId: req.body.userId }).then((user) => {
     if (user) {
       return res.json(user);
     } else {
