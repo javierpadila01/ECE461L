@@ -7,18 +7,15 @@
  * @component
  */
 import React, { useState } from 'react';
-
-function Form({ label }) {
+  
+function Form({ label, onInputChange }) {
   const [inputValue, setInputValue] = useState('');
 
-  /**
-   * Event handler for input change.
-   * Updates the input value state with the new value entered by the user.
-   * @param {object} event - The event object.
-   */
   const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  }
+    const value = event.target.value;
+    setInputValue(value);
+    onInputChange(value);
+  };
 
   return(
     <div>
