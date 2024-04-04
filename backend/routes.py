@@ -1,6 +1,8 @@
-from flask import request, jsonify
-from models import User, Project
-from app import app, db, bcrypt
+from flask import request, jsonify, Flask
+from Users import User
+from Projects import Project
+
+app= Flask(__name__)
 
 @app.route('/getuserdata', methods=['POST'])
 def get_user_data():
@@ -48,4 +50,50 @@ def join_project():
     user.update(push__joinedProjects=data.get('projectID'))
     return jsonify({"message": "Joined project successfully"}), 200
 
-# Additional route implementations will follow the patterns established here.
+@app.route('/checkout', methods=['POST'])
+def checkout():
+    data = request.json
+    project_id = data.get('projectID')
+    amount = data.get('amount')
+    set_number = data.get('set')
+    
+    if amount < 0:
+        return jsonify({"message": "Invalid amount"}), 400
+    
+    project = Project.objects(projectID=project_id).first()
+    if not project:
+        return jsonify({"message": "Project Not Found"}), 400
+    
+    main_project = Project.objects(ID="main").first()
+    if not main_project:
+        return jsonify({"message": "Main Project Set not found"}), 400
+    
+    if set_number == 1:
+        if main_project.availability1 - amount < 0:
+            return jsonify({"message": "No More availability in set 1"}), 400
+        main_project.update(dec__availability1=amount)
+    elif set_number == 2:
+        if main_project.availability2 - amount < 0:
+            return jsonify({"message": "No More availability in set 2"}), 400
+        main_project.update(dec__availability2=amount)
+    else:
+        return jsonify({"message": "Invalid set number"}), 400
+    
+    return jsonify({"message": "Checkout successful"}), 200
+
+@app.route('/adduser', methods=['POST'])
+def add_user():
+    data = request.json
+    email = data.get('email')
+    user_id = data.get('userId')
+    password = data.get('password')
+    
+    # Check if the email or userId already exists
+    if User.objects(email=email).first() or User.objects(userId=user_id).first():
+        return jsonify({"message": "User already exists"}), 400
+    
+    new_user = User(email=email, userId=user_id)
+    new_user.encrypt(password)
+    new_user.save()
+    
+    return jsonify({"message": "User added successfully"}), 201
