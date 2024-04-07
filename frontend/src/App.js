@@ -29,7 +29,7 @@ function App() {
         <Routes>
           <Route path="/existing-user-login" element={<ExistingUserLogin  onBackToMain={handleBackToMain} />} />
           <Route path="/new-user-login" element={<NewUserLogin onBackToMain={handleBackToMain} />} />
-          <Route path="/project-selection" element={<NewUserLogin />} />
+          <Route path="/project-selection" element={<ProjectSelection />} />
           <Route path="/existing-project" element={<NewUserLogin />} />
           <Route path="/new-project" element={<NewUserLogin />} />
         </Routes>

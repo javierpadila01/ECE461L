@@ -17,6 +17,7 @@ function ExistingUserLogin({ onBackToMain }) {
       }
 
       const response = await axios.post('/api/users/login', {
+        username: username,
         userId: userID,
         password: password,
       });
