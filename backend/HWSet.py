@@ -7,21 +7,43 @@ class HWSet:
         self.client = MongoClient(uri)
         self.db = self.client.Management
         self.hw_set_collection = self.db.HWSet
-
-    def check_out(self, name, quantity):
-        hw_set = self.hw_set_collection.find_one({'name': name})
-        if hw_set and hw_set['availability'] >= quantity:
-            self.hw_set_collection.update_one({'name': name}, {'$inc': {'availability': -quantity}})
+        self.user_hw_collection = self.db.UserHW  
+        
+    def check_out(self, userID, HWSetName, quantity):
+        hw_set = self.hw_set_collection.find_one({"Name": HWSetName})
+        if hw_set and hw_set["Availability"] >= quantity:
+            self.hw_set_collection.update_one(
+                {"Name": HWSetName}, 
+                {"$inc": {"Availability": -quantity}}
+            )
+            existing_record = self.user_hw_collection.find_one({"UserID": userID, "HWSetName": HWSetName})
+            if existing_record:
+                new_quantity = existing_record["Quantity"] + quantity
+                self.user_hw_collection.update_one(
+                    {"UserID": userID, "HWSetName": HWSetName},
+                    {"$set": {"Quantity": new_quantity}}
+                )
+            else:
+                self.user_hw_collection.insert_one(
+                    {"UserID": userID, "HWSetName": HWSetName, "Quantity": quantity}
+                )
             return True, "Hardware checked out successfully."
-        return False, "Insufficient hardware availability."
+        return False, "Insufficient availability or hardware set not found."
 
-    def check_in(self, name, quantity):
-        hw_set = self.hw_set_collection.find_one({'name': name})
-        if hw_set:
-            new_availability = hw_set['availability'] + quantity
-            # Ensure we don't exceed initial capacity
-            if new_availability > hw_set['capacity']:
-                new_availability = hw_set['capacity']
-            self.hw_set_collection.update_one({'name': name}, {'$set': {'availability': new_availability}})
+    def check_in(self, userID, HWSetName, quantity):
+        user_hw = self.user_hw_collection.find_one({"UserID": userID, "HWSetName": HWSetName})
+        if user_hw and user_hw["Quantity"] >= quantity:
+            self.hw_set_collection.update_one(
+                {"Name": HWSetName}, 
+                {"$inc": {"Availability": quantity}}
+            )
+            new_quantity = user_hw["Quantity"] - quantity
+            if new_quantity > 0:
+                self.user_hw_collection.update_one(
+                    {"UserID": userID, "HWSetName": HWSetName},
+                    {"$set": {"Quantity": new_quantity}}
+                )
+            else:
+                self.user_hw_collection.delete_one({"UserID": userID, "HWSetName": HWSetName})
             return True, "Hardware checked in successfully."
-        return False, "Hardware set not found."
+        return False, "User does not have enough hardware to check in or it was not found."
