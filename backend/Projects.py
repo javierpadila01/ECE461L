@@ -19,7 +19,7 @@ class Project:
         return True, "Project created successfully."
 
     def join_project(self, username, projectID):
-         project = project_collection.find_one({"projectID": projectID})
+        project = project_collection.find_one({"projectID": projectID})
         if not project:
             return False, "Project not found."
         existing_association = self.associations_collection.find_one({"userID": userID, "projectID": projectID})
