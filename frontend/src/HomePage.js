@@ -14,10 +14,14 @@ function HomePage() {
   };
 
   return (
+    <div>
+    <h1>Welcome to the Hardware Management System.</h1>
     <div className="button-container">
       <button className="nav-button" onClick={handleExistingUserClick}>Login for Existing User</button>
       <button className="nav-button" onClick={handleNewUserClick}>Create New User</button>
     </div>
+    </div>
+    
   );
 }
 

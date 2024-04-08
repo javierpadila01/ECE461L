@@ -1,42 +1,50 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Form from './Forms';
 import axios from 'axios';
 
 function ExistingProject() {
-    const handleClick = async () => {
-        const btn = document.getElementById('btn');
-        btn.addEventListener('click', function handleClick() {
-            btn.textContent = 'Button clicked';
-        });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const userID = location.state?.userID;
+  
+  const [projectID, setProjectID] = useState('');
+
+  const handleLoginClick = async () => {
+    try {
+      
+      if (!projectID) {
+        console.log('All fields are required');
+        return;
+      }
+      navigate('/hardware-management', { state: { userID, projectID } }); //change the location of this line
+      const response = await axios.post('/api/users/signup', {
+        projectID: projectID,
+      });
+
+      const token = response.data.token;
+      console.log('Login Successful');
+
+    } catch (error) {
+      console.error('Login Error:', error);
     }
+  };
 
-    return (
-        <div>
-  
-          <h1>Projects</h1>
-  
-          <div class = "border">
-          <h2>Project 1</h2>
-            
-          </div>
-  
-          <div class = "border">
-          <h2>Project 2</h2>
-              
-          </div>
-  
-          <div class = "border">
-          <h2>Project 3</h2>
-          
-          </div>
+  const handleBackClick = () => {
+    navigate('/project-selection', { state: { userID } });
+  };
 
-            {/* <Button onClick={() => this.handleClick()}>Join</Button> */}
-
-            {/* <TextField id='btn' label="Enter qty" variant="outlined" > </TextField> */}
-        </div>
-  
-      )
+  return (
+    <div>
+      <h1>Login to Existing Project</h1>
+      <p>Logged in as: {userID}</p>
+      <Form label="ProjectID" onInputChange={(value) => setProjectID(value)} />
+      <button onClick={handleLoginClick}>Login to Current Project</button>
+      <div>
+        <button onClick={handleBackClick}>Back to Project Selection</button>
+      </div>
+    </div>
+  );
 }
 
 export default ExistingProject;

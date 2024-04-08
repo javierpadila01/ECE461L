@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from './Forms';
 import axios from 'axios';
 
-function NewUserLogin({ onBackToMain }) {
+function NewUserLogin() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [userID, setUserID] = useState('');
@@ -15,14 +15,17 @@ function NewUserLogin({ onBackToMain }) {
         console.log('All fields are required');
         return;
       }
+      navigate('/project-selection', { state: { userID } });  //change the location of this line
 
-      const response = await axios.post('/api/users/login', {
+      const response = await axios.post('/api/users/signup', {
+        username: username,
         userId: userID,
         password: password,
       });
 
       const token = response.data.token;
       console.log('Login Successful');
+      navigate('/project-selection');
     } catch (error) {
       console.error('Login Error:', error);
     }
@@ -30,12 +33,11 @@ function NewUserLogin({ onBackToMain }) {
 
   const handleBackClick = () => {
     navigate('/');
-    onBackToMain();
   };
 
   return (
     <div>
-      <h1>Create New User</h1>
+      <h1>Signup as New User</h1>
       <Form label="Username" onInputChange={(value) => setUsername(value)} />
       <Form label="UserID" onInputChange={(value) => setUserID(value)} />
       <Form label="Password" onInputChange={(value) => setPassword(value)} />
