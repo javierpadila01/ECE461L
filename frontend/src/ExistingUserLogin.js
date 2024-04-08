@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from './Forms';
 import axios from 'axios';
 
-function ExistingUserLogin({ onBackToMain }) {
+function ExistingUserLogin() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [userID, setUserID] = useState('');
@@ -11,18 +11,21 @@ function ExistingUserLogin({ onBackToMain }) {
 
   const handleLoginClick = async () => {
     try {
+      
       if (!username || !userID || !password) {
         console.log('All fields are required');
         return;
       }
-
-      const response = await axios.post('/api/users/login', {
+      navigate('/project-selection', { state: { userID } });  //change the location of this line
+      const response = await axios.post('/api/users/signup', {
+        username: username,
         userId: userID,
         password: password,
       });
 
       const token = response.data.token;
       console.log('Login Successful');
+
     } catch (error) {
       console.error('Login Error:', error);
     }
@@ -30,7 +33,6 @@ function ExistingUserLogin({ onBackToMain }) {
 
   const handleBackClick = () => {
     navigate('/');
-    onBackToMain();
   };
 
   return (

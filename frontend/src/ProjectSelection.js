@@ -1,23 +1,34 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import './HomePage.css'; 
+import {useLocation, useNavigate } from 'react-router-dom';
 
-function ProjectSelection() {
+function ProjectSelection({}) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const userID = location.state?.userID;
 
   const handleExistingProjectClick = () => {
-    navigate('/existing-project');
+    navigate('/existing-project', { state: { userID } });
   };
 
   const handleNewProjectClick = () => {
-    navigate('/new-project');
+    navigate('/new-project', { state: { userID } });
   };
 
+  const handleLogout = () => {
+    navigate('/');
+  };
+
+
   return (
-    <div className="container">
-      <div className="button-container">
-        <button onClick={handleExistingProjectClick}>Find Existing Project</button>
-        <button onClick={handleNewProjectClick}>Create New Project</button>
-      </div>
+   <div>
+   <h1>Project Selection</h1>
+   <p>Logged in as: {userID}</p>
+   <div className="button-container">
+      <button className="nav-button" onClick={handleExistingProjectClick}>Login for Existing Project</button>
+      <button className="nav-button" onClick={handleNewProjectClick}>Create New Project</button>
+      <button className="nav-button" onClick={handleLogout}>Logout</button>
+    </div>
     </div>
   );
 }
