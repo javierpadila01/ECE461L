@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
-import './App.css'; 
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import ExistingUserLogin from './_ExistingUserLogin';
-import NewUserLogin from './_NewUserLogin';
-import MyComponent from './MyCompClass';
+import ExistingUserLogin from './ExistingUserLogin';
+import NewUserLogin from './NewUserLogin';
+import HomePage from './HomePage';
+import ProjectSelection from './ProjectSelection';
+import ExistingProject from './ExistingProject';
+import NewProject from './NewProject';
+import HardwareManagement from './HardwareManagement';
 
 class App extends React.Component {
   render () {
@@ -12,12 +15,12 @@ class App extends React.Component {
       <div className="container">
         <Routes>
           <Route path="/" element={<HomePage/>} />
-          <Route path="/existing-user-login" element={<_ExistingUserLogin />} />
-          <Route path="/new-user-login" element={<_NewUserLogin />} />
-          <Route path="/project-selection" element={<_ProjectSelection />} />
-          <Route path="/existing-project" element={<_ExistingProject/>} />
-          <Route path="/new-project" element={<_NewProject />} />
-          <Route path="/hardware-management" element={<_HardwareManagement />} />
+          <Route path="/existing-user-login" element={<ExistingUserLogin />} />
+          <Route path="/new-user-login" element={<NewUserLogin />} />
+          <Route path="/project-selection" element={<ProjectSelection />} />
+          <Route path="/existing-project" element={<ExistingProject/>} />
+          <Route path="/new-project" element={<NewProject />} />
+          <Route path="/hardware-management" element={<HardwareManagement />} />
         </Routes>
       </div>
   );

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from './Forms';
 import axios from 'axios';
 
-function ExistingProject({ onBackToMain }) {
+function ExistingProject() {
     const handleClick = async () => {
         const btn = document.getElementById('btn');
         btn.addEventListener('click', function handleClick() {
@@ -18,23 +18,25 @@ function ExistingProject({ onBackToMain }) {
   
           <div class = "border">
           <h2>Project 1</h2>
-              <CheckIn />
+            
           </div>
   
           <div class = "border">
           <h2>Project 2</h2>
-              <CheckIn />
+              
           </div>
   
           <div class = "border">
           <h2>Project 3</h2>
-              <CheckIn />
+          
           </div>
 
-            <Button onClick={() => this.handleClick()}>Join</Button>
+            {/* <Button onClick={() => this.handleClick()}>Join</Button> */}
 
-            <TextField id='btn' label="Enter qty" variant="outlined" > </TextField>
+            {/* <TextField id='btn' label="Enter qty" variant="outlined" > </TextField> */}
         </div>
   
       )
 }
+
+export default ExistingProject;
