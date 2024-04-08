@@ -24,7 +24,7 @@ class User:
         return True, "User created successfully."
 
     def sign_in(self, username, password):
-        user = self.user_collection.find_one({'username': username})
+        user = self.user_collection.find_one({'userid': userid, 'username': username})
         if user and self.decrypt(user['password']) == password:
             return True, "Login successful."
-        return False, "Invalid username or password."
+        return False, "Invalid userid, username, or password."
