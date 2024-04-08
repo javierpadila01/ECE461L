@@ -8,25 +8,23 @@ class Project:
         self.db = self.client.Management
         self.project_collection = self.db.Projects
 
-    def create_project(self, projectID, project_name, description, creator):
+    def create_project(self, projectID, project_name, description):
         if self.project_collection.find_one({"projectID": projectID}):
             return False, "Project ID already exists."
         self.project_collection.insert_one({
             "projectID": projectID,
             "Name": project_name,
             "Description": description,
-            "Authorized_Users": [creator],
         })
         return True, "Project created successfully."
 
     def join_project(self, username, projectID):
-        project = self.project_collection.find_one({"projectID": projectID})
-        if project:
-            if username in project.get("Authorized_Users", []):
-                return False, "User already a member."
-            self.project_collection.update_one(
-                {"projectID": projectID},
-                {"$push": {"Authorized_Users": username}}
-            )
-            return True, "User added to project successfully."
-        return False, "Project not found."
+         project = project_collection.find_one({"projectID": projectID})
+        if not project:
+            return False, "Project not found."
+        existing_association = self.associations_collection.find_one({"userID": userID, "projectID": projectID})
+        if existing_association:
+            return False, "User already associated with this project."
+
+        self.associations_collection.insert_one({"userID": userID, "projectID": projectID})
+        return True, "User successfully joined the project."
