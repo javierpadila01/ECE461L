@@ -14,6 +14,7 @@ class App extends React.Component {
 
       <div className="container">
         <Routes>
+          {/* This is the routing for the project "/" is the initial page and everything navigates using useNavigate */}
           <Route path="/" element={<HomePage/>} />
           <Route path="/existing-user-login" element={<ExistingUserLogin />} />
           <Route path="/new-user-login" element={<NewUserLogin />} />

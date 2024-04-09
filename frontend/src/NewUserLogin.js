@@ -15,17 +15,21 @@ function NewUserLogin() {
         console.log('All fields are required');
         return;
       }
-      navigate('/project-selection', { state: { userID } });  //change the location of this line
+      navigate('/project-selection', { state: { userID } });  
+      //send in username userID and password
+      // check if userID already exists, if so send error that that userID already exists
+      // if not then add it to the database and log them in
 
-      const response = await axios.post('/api/users/signup', {
-        username: username,
-        userId: userID,
-        password: password,
-      });
+      
+      // const response = await axios.post('/api/users/signup', {
+      //   username: username,
+      //   userId: userID,
+      //   password: password,
+      // });
 
-      const token = response.data.token;
-      console.log('Login Successful');
-      navigate('/project-selection');
+      // const token = response.data.token;
+      // console.log('Login Successful');
+      // navigate('/project-selection');
     } catch (error) {
       console.error('Login Error:', error);
     }

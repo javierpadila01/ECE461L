@@ -9,10 +9,12 @@ function ProjectSelection({}) {
 
   const handleExistingProjectClick = () => {
     navigate('/existing-project', { state: { userID } });
+
   };
 
   const handleNewProjectClick = () => {
     navigate('/new-project', { state: { userID } });
+    
   };
 
   const handleLogout = () => {

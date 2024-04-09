@@ -16,15 +16,10 @@ function ExistingUserLogin() {
         console.log('All fields are required');
         return;
       }
-      navigate('/project-selection', { state: { userID } });  //change the location of this line
-      const response = await axios.post('/api/users/signup', {
-        username: username,
-        userId: userID,
-        password: password,
-      });
-
-      const token = response.data.token;
-      console.log('Login Successful');
+      navigate('/project-selection', { state: { userID } }); 
+      
+      //send in username userID and password
+      // check if credentials are all good, if not then no
 
     } catch (error) {
       console.error('Login Error:', error);

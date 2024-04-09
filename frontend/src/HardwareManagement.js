@@ -17,12 +17,18 @@ function HardwareManagement() {
     const [request1, setRequest1] = useState(null);
     const [request2, setRequest2] = useState(null);
 
+   // when the page gets started, render and fetch the data for the quantities of capacity and available into the 
+
     const handleCheckIn1 = () => {
-        
+        //pass in userid, projectid, and quantity request
+        // if user does not have enough that is the error
+        //otherwise update the database with that difference
     };
 
     const handleCheckOut1 = () => {
-        
+        //pass in userid, projectid, and quantity request
+        // if there is not enough capacity, that is the error
+        //otherwise update the database for that user to check out that amount
     };
 
     const handleCheckIn2 = () => {

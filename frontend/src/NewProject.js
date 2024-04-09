@@ -21,14 +21,9 @@ function NewProject() {
       }
       navigate('/hardware-management', { state: { userID, projectID } });
 
-      const response = await axios.post('/api/users/signup', {
-        projectName: projectName,
-        description: description,
-        projectID: projectID,
-      });
-
-      const token = response.data.token;
-      console.log('Login Successful');
+      //send in projectname project description and projectID
+      //if there is a conflicting projectID, error
+      //otherwise, add into database
     
     } catch (error) {
       console.error('Login Error:', error);

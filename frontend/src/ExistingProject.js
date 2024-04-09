@@ -18,12 +18,9 @@ function ExistingProject() {
         return;
       }
       navigate('/hardware-management', { state: { userID, projectID } }); //change the location of this line
-      const response = await axios.post('/api/users/signup', {
-        projectID: projectID,
-      });
-
-      const token = response.data.token;
-      console.log('Login Successful');
+      
+      //send in project ID, if it does not exist, return the error
+      //if it does exist log them in 
 
     } catch (error) {
       console.error('Login Error:', error);
