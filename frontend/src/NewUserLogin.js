@@ -17,8 +17,8 @@ function NewUserLogin() {
       }
 
    const response = await axios.post('/signup', {
+    userid: userID,
     username: username,
-    userID: userID,
     password: password,
   });
   

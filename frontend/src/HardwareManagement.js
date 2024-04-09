@@ -19,7 +19,7 @@ function HardwareManagement() {
 
    // when the page gets started, render and fetch the data for the quantities of capacity and available into the 
 
-    const handleCheckIn1 = async () => {
+    const handleCheckIn = async () => {
         //pass in userid, projectid, and quantity request
         // if user does not have enough that is the error
         //otherwise update the database with that difference
@@ -28,7 +28,7 @@ function HardwareManagement() {
             console.log('All fields are required');
             return;
           }
-          const response = await axios.post('/createproject', {
+          const response = await axios.post('/checkin', {
             //userid, projectid, quantity
           });
           
@@ -44,7 +44,7 @@ function HardwareManagement() {
         }
     };
 
-    const handleCheckOut1 = async () => {
+    const handleCheckOut = async () => {
         //pass in userid, projectid, and quantity request
         // if there is not enough capacity, that is the error
         //otherwise update the database for that user to check out that amount
@@ -53,7 +53,7 @@ function HardwareManagement() {
             console.log('All fields are required');
             return;
           }
-          const response = await axios.post('/createproject', {
+          const response = await axios.post('/checkout', {
             //userid, projectid, quantity
           });
           
@@ -68,16 +68,8 @@ function HardwareManagement() {
     
     };
 
-    const handleCheckIn2 = async () => {
-        
-    };
-
-    const handleCheckOut2 = async () => {
-        
-    };
-
     const handleBackClick = () => {
-        navigate('/project-selection', { state: { userID } }3erf);
+        navigate('/project-selection', { state: { userID } });
       };
 
   return (
@@ -91,8 +83,8 @@ function HardwareManagement() {
                 <p>Total Capacity: {capacity1}</p>
                 <p>Available: {available1} </p>
                 <Form label="Request" onInputChange={(value) => setRequest1(value)} />
-                <button onClick={handleCheckIn1}>Check In</button>
-                <button onClick={handleCheckOut1}>Check Out</button>
+                <button onClick={handleCheckIn}>Check In</button>
+                <button onClick={handleCheckOut}>Check Out</button>
         
         </div>
 
@@ -101,8 +93,8 @@ function HardwareManagement() {
                 <p>Total Capacity: {capacity2} </p>
                 <p>Available: {available2} </p>
                 <Form label="Request" onInputChange={(value) => setRequest2(value)} />
-                <button onClick={handleCheckIn2}>Check In</button>
-                <button onClick={handleCheckOut2}>Check Out</button>
+                <button onClick={handleCheckIn}>Check In</button>
+                <button onClick={handleCheckOut}>Check Out</button>
         </div>
         <div className="button-container">
         <button className="nav-button" onClick={handleBackClick}>Back to Project Selection</button>

@@ -16,11 +16,11 @@ class User:
     def decrypt(encrypted_password):
         return "".join(chr((ord(char) - 3) % 126) for char in encrypted_password)
 
-    def sign_up(self, username, password):
-        if self.user_collection.find_one({'username': username}):
+    def sign_up(self, userid, username, password):
+        if self.user_collection.find_one({'userid': userid}):
             return False, "Username already exists."
         encrypted_password = self.encrypt(password)
-        self.user_collection.insert_one({'username': username, 'password': encrypted_password})
+        self.user_collection.insert_one({'userid': userid,'username': username, 'password': encrypted_password})
         return True, "User created successfully."
 
     def sign_in(self, userid, username, password):

@@ -12,7 +12,7 @@ hwset_ops = HWSet()
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.json
-    success, message = user_ops.sign_up(data['username'], data['password'])
+    success, message = user_ops.sign_in(data['userid'], data['username'], data['password'])
     return jsonify({'message': message}), 201 if success else 400
 
 @app.route('/signin', methods=['POST'])
