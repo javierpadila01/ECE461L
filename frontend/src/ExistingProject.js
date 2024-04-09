@@ -17,8 +17,17 @@ function ExistingProject() {
         console.log('All fields are required');
         return;
       }
-      navigate('/hardware-management', { state: { userID, projectID } }); //change the location of this line
+      const response = await axios.post('/joinproject', {
+        projectID: projectID,
+      });
       
+      if (response.status === 201) {
+        console.log('Project login successful');
+        navigate('/hardware-management', { state: { userID, projectID } });
+      } else {
+        console.log('Error:', response.data.message);
+      }
+    
       //send in project ID, if it does not exist, return the error
       //if it does exist log them in 
 

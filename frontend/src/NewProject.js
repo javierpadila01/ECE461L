@@ -19,11 +19,19 @@ function NewProject() {
         console.log('All fields are required');
         return;
       }
-      navigate('/hardware-management', { state: { userID, projectID } });
-
-      //send in projectname project description and projectID
-      //if there is a conflicting projectID, error
-      //otherwise, add into database
+      const response = await axios.post('/createproject', {
+        projectName: projectName,
+        description: description,
+        projectID: projectID,
+      });
+      
+      if (response.status === 201) {
+        console.log('Project creation successful');
+        navigate('/hardware-management', { state: { userID, projectID } });
+      } else {
+        console.log('Error:', response.data.message);
+      }
+     
     
     } catch (error) {
       console.error('Login Error:', error);

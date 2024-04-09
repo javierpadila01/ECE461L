@@ -11,19 +11,27 @@ function ExistingUserLogin() {
 
   const handleLoginClick = async () => {
     try {
-      
       if (!username || !userID || !password) {
         console.log('All fields are required');
         return;
       }
-      navigate('/project-selection', { state: { userID } }); 
-      
-      //send in username userID and password
-      // check if credentials are all good, if not then no
 
-    } catch (error) {
-      console.error('Login Error:', error);
-    }
+   const response = await axios.post('/signin', {
+    username: username,
+    userID: userID,
+    password: password,
+  });
+  
+  if (response.status === 201) {
+    console.log('User signed in successfully');
+    navigate('/project-selection', { state: { userID } }); 
+
+  } else {
+    console.log('Error:', response.data.message);
+  }
+} catch (error) {
+  console.error('Signup Error:', error);
+}
   };
 
   const handleBackClick = () => {

@@ -19,28 +19,65 @@ function HardwareManagement() {
 
    // when the page gets started, render and fetch the data for the quantities of capacity and available into the 
 
-    const handleCheckIn1 = () => {
+    const handleCheckIn1 = async () => {
         //pass in userid, projectid, and quantity request
         // if user does not have enough that is the error
         //otherwise update the database with that difference
+        try {
+          if (!projectName || !description || !projectID) {
+            console.log('All fields are required');
+            return;
+          }
+          const response = await axios.post('/createproject', {
+            //userid, projectid, quantity
+          });
+          
+          if (response.status === 201) {
+            console.log('Checkin Successful');
+
+          } else {
+            console.log('Error:', response.data.message);
+          }
+         
+        } catch (error) {
+          console.error('Login Error:', error);
+        }
     };
 
-    const handleCheckOut1 = () => {
+    const handleCheckOut1 = async () => {
         //pass in userid, projectid, and quantity request
         // if there is not enough capacity, that is the error
         //otherwise update the database for that user to check out that amount
+        try {
+          if (!projectName || !description || !projectID) {
+            console.log('All fields are required');
+            return;
+          }
+          const response = await axios.post('/createproject', {
+            //userid, projectid, quantity
+          });
+          
+          if (response.status === 201) {
+            console.log('Checkout successful');
+          } else {}
+            console.log('Error:', response.data.message);
+          
+        }catch(error) {
+          console.error('Login Error:', error);
+        }
+    
     };
 
-    const handleCheckIn2 = () => {
+    const handleCheckIn2 = async () => {
         
     };
 
-    const handleCheckOut2 = () => {
+    const handleCheckOut2 = async () => {
         
     };
 
     const handleBackClick = () => {
-        navigate('/project-selection', { state: { userID } });
+        navigate('/project-selection', { state: { userID } }3erf);
       };
 
   return (
