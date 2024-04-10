@@ -32,10 +32,10 @@ function HardwareManagement() {
         if (response.status === 200) {
           const { data } = response;
           const [avail1, cap1, avail2, cap2] = data;
-          setAvailable1(avail1-200);
-          setCapacity1(cap1-100);
-          setAvailable2(avail2-50);
-          setCapacity2(cap2-3);
+          setAvailable1(avail1);
+          setCapacity1(cap1);
+          setAvailable2(avail2);
+          setCapacity2(cap2);
           console.log('Fetch Successful');
       }
       } catch (error) {
@@ -44,9 +44,6 @@ function HardwareManagement() {
   };
 
     const handleCheckIn = async (HWset) => {
-        //pass in userid, projectid, and quantity request
-        // if user does not have enough that is the error
-        //otherwise update the database with that difference
         try {
           if (!request1 && !request2) {
             console.log('All fields are required');
