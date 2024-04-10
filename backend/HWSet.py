@@ -62,3 +62,16 @@ class HWSet:
                 self.user_hw_collection.delete_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
             return True, "Hardware checked in successfully."
         return False, "User does not have enough hardware to check in or it was not found."
+
+
+    def get_availability_and_capacity(self):
+        hardware_sets = self.hw_set_collection.find({})
+        result = []
+        for hw_set in hardware_sets:
+            result.append({
+                "Name": hw_set["Name"],
+                "Availability": hw_set["Availability"],
+                "Capacity": hw_set["Capacity"]
+            })
+        return result
+
