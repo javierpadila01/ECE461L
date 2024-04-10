@@ -17,7 +17,22 @@ function HardwareManagement() {
     const [request1, setRequest1] = useState(null);
     const [request2, setRequest2] = useState(null);
 
-  //  when the page gets started, render and fetch the data for the quantities of capacity and available into the 
+    useEffect(() => {
+      if (projectID) {fetchData(); } 
+            }, [projectID, request1, request2]);
+
+  const fetchData = async () => {
+      try {
+          const response = await axios.get(`/fetchHWData/${projectID}`);
+          const { capacity1, available1, capacity2, available2 } = response.data;
+          setCapacity1(capacity1);
+          setAvailable1(available1);
+          setCapacity2(capacity2);
+          setAvailable2(available2);
+      } catch (error) {
+          console.error('Error fetching HW data:', error);
+      }
+  };
 
     const handleCheckIn = async (HWset) => {
         //pass in userid, projectid, and quantity request
