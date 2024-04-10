@@ -63,7 +63,7 @@ function HardwareManagement() {
             quantity: HWset === 1 ? request1 : request2
           });
           
-          if (response.status === 201) {
+          if (response.status === 200) {
             console.log('Checkin Successful');
 
           } else {
@@ -96,7 +96,7 @@ function HardwareManagement() {
             quantity: HWset === 1 ? request1 : request2
           });
           
-          if (response.status === 201) {
+          if (response.status === 200) {
             console.log('Checkout successful');
           } else {}
             console.log('Error:', response.data.message);

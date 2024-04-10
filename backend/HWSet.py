@@ -29,23 +29,23 @@ class HWSet:
         if not hw_set:
             return False, "Hardware set not found."
     
-        if int(hw_set["Availability"]) < quantity:
+        if int(hw_set["Availability"]) < int(quantity):
             return False, "Insufficient availability."
 
         self.hw_set_collection.update_one(
             {"ProjectID": projectID, "Name": HWSetName},
-            {"$inc": {"Availability": -quantity}}
+            {"$inc": {"Availability": -int(quantity)}}
         )
 
         user_hw = self.user_hw_collection.find_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
         if user_hw:
             self.user_hw_collection.update_one(
                 {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName},
-                {"$inc": {"Quantity": quantity}}
+                {"$inc": {"Quantity": int(quantity)}}
             )
         else:
             self.user_hw_collection.insert_one(
-                {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName, "Quantity": quantity}
+                {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName, "Quantity": int(quantity)}
             )
     
         return True, "Hardware checked out successfully."
@@ -53,21 +53,21 @@ class HWSet:
 
     def check_in(self, userID, projectID, HWSetName, quantity):
         user_hw = self.user_hw_collection.find_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
-        if not user_hw or user_hw["Quantity"] < quantity:
+        if not user_hw or int(user_hw["Quantity"]) < int(quantity):
             return False, "User does not have enough hardware to check in."
 
         hw_set = self.hw_set_collection.find_one({"ProjectID": projectID, "Name": HWSetName})
-        new_availability = min(hw_set["Availability"] + quantity, hw_set["Capacity"])
+        new_availability = min(int(hw_set["Availability"]) + int(quantity), hw_set["Capacity"])
         self.hw_set_collection.update_one(
             {"ProjectID": projectID, "Name": HWSetName},
             {"$set": {"Availability": new_availability}}
         )
 
-        new_quantity = user_hw["Quantity"] - quantity
+        new_quantity = int(user_hw["Quantity"]) - int(quantity)
         if new_quantity > 0:
             self.user_hw_collection.update_one(
                 {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName},
-                {"$set": {"Quantity": new_quantity}}
+                {"$set": {"Quantity": int(new_quantity)}}
             )
         else:
             self.user_hw_collection.delete_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
