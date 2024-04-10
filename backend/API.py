@@ -25,6 +25,9 @@ def signin():
 def create_project():
     data = request.json
     success, message = project_ops.create_project(data['projectID'], data['project_name'], data['description'])
+    if success:
+        hwset_ops.initialize_hw_sets_for_project(data['projectID'])
+        message += " Hardware sets initialized."
     return jsonify({'message': message}), 200 if success else 402
 
 @app.route('/joinproject', methods=['POST'])
