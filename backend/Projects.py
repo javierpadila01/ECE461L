@@ -22,7 +22,4 @@ class Project:
         project = self.project_collection.find_one({"projectID": projectID})
         if not project:
             return False, "Project not found."
-        existing_association = self.associations_collection.find_one({"projectID": projectID})
-        if existing_association:
-            return False, "User already associated with this project."
         return True, "User successfully joined the project."

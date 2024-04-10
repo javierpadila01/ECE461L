@@ -21,7 +21,7 @@ function ExistingProject() {
         projectID: projectID,
       });
       
-      if (response.status === 201) {
+      if (response.status === 200) {
         console.log('Project login successful');
         navigate('/hardware-management', { state: { userID, projectID } });
       } else {

@@ -25,13 +25,13 @@ def signin():
 def create_project():
     data = request.json
     success, message = project_ops.create_project(data['projectID'], data['project_name'], data['description'])
-    return jsonify({'message': message}), 201 if success else 402
+    return jsonify({'message': message}), 200 if success else 402
 
 @app.route('/joinproject', methods=['POST'])
 def join_project():
     data = request.json
     success, message = project_ops.join_project(data['projectID'])
-    return jsonify({'message': message}), 200 if success else 402
+    return jsonify({'message': message}), 200 if success else 403
 
 @app.route('/checkout', methods=['POST'])
 def checkout():
