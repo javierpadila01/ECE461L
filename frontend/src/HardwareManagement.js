@@ -29,9 +29,15 @@ function HardwareManagement() {
                 projectID: projectID
             }
         });
-        const { hardwareSets } = response.data;
-        console.log(hardwareSets);
-          //this guy right here is what I need help with
+        if (response.status === 200) {
+          const { data } = response;
+          const [avail1, cap1, avail2, cap2] = data;
+          setAvailable1(avail1-200);
+          setCapacity1(cap1-100);
+          setAvailable2(avail2-50);
+          setCapacity2(cap2-3);
+          console.log('Fetch Successful');
+      }
       } catch (error) {
           console.error('Error fetching HW data:', error);
       }
