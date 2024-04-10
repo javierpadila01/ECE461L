@@ -73,7 +73,7 @@ function HardwareManagement() {
           }
           const response = await axios.post('/checkout', {
               userid: userID,
-              // projectid: projectID
+              projectid: projectID
               HWSetName: `HWSet${HWset}`,
               quantity: HWset === 1 ? request1 : request2
           });
