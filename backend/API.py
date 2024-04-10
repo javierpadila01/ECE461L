@@ -36,13 +36,13 @@ def join_project():
 @app.route('/checkout', methods=['POST'])
 def checkout():
     data = request.json
-    success, message = hwset_ops.check_out(data['userid'], data['HWSetName'], data['quantity'])
+    success, message = hwset_ops.check_out(data['userID'], data['projectID'], data['HWSetName'], data['quantity'])
     return jsonify({'message': message}), 200 if success else 402
 
 @app.route('/checkin', methods=['POST'])
 def checkin():
     data = request.json
-    success, message = hwset_ops.check_in(data['userid'], data['HWSetName'], data['quantity'])
+    success, message = hwset_ops.check_in(data['userID'], data['projectID'], data['HWSetName'], data['quantity'])
     return jsonify({'message': message}), 200 if success else 402
 
 if __name__ == '__main__':
