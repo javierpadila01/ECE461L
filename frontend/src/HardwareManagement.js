@@ -41,12 +41,19 @@ function HardwareManagement() {
         try {
           if (!request1 && !request2) {
             console.log('All fields are required');
+
             return;
           }
+
+          console.log('userID:', userID);
+          console.log('projectID:', projectID);
+          console.log('HWset:', HWset);
+          console.log('quantity:', HWset === 1 ? request1 : request2);
+
           const response = await axios.post('/checkin', {
-            userid: userID,
-            // projectid: projectID
-            HWSetName: `HWSet${HWset}`,
+            userID: userID,
+            projectID: projectID,
+            HWSetName: HWset,
             quantity: HWset === 1 ? request1 : request2
           });
           
@@ -71,10 +78,15 @@ function HardwareManagement() {
             console.log('All fields are required');
             return;
           }
+          console.log('userID:', userID);
+          console.log('projectID:', projectID);
+          console.log('HWset:', HWset);
+          console.log('quantity:', HWset === 1 ? request1 : request2);
+
           const response = await axios.post('/checkout', {
-              userid: userID,
-              projectid: projectID
-              HWSetName: `HWSet${HWset}`,
+              userID: userID,
+              projectID: projectID,
+              HWSetName: HWset,
               quantity: HWset === 1 ? request1 : request2
           });
           
