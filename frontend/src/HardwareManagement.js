@@ -16,10 +16,11 @@ function HardwareManagement() {
     const [available2, setAvailable2] = useState(null);
     const [request1, setRequest1] = useState(null);
     const [request2, setRequest2] = useState(null);
+    const [clickCount, setClickCount] = useState(0);
 
     useEffect(() => {
       if (projectID) {fetchData(); } 
-            }, [projectID, request1, request2]);
+            }, [projectID, clickCount, request1, request2]);
 
   const fetchData = async () => {
       try {
@@ -45,6 +46,7 @@ function HardwareManagement() {
 
     const handleCheckIn = async (HWset) => {
         try {
+          setClickCount(clickCount + 1);
           if (!request1 && !request2) {
             console.log('All fields are required');
 
@@ -80,6 +82,7 @@ function HardwareManagement() {
         // if there is not enough capacity, that is the error
         //otherwise update the database for that user to check out that amount
         try {
+          setClickCount(clickCount + 1);
           if (!request1 && !request2) {
             console.log('All fields are required');
             return;
