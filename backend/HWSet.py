@@ -1,49 +1,77 @@
 from pymongo import MongoClient
 
-uri = "mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true"
 
 class HWSet:
-    def __init__(self):
-        self.client = MongoClient(uri)
-        self.db = self.client.Management
-        self.hw_set_collection = self.db.HWSet
-        self.user_hw_collection = self.db.UserHW  
-        
-    def check_out(self, userID, HWSetName, quantity):
-        hw_set = self.hw_set_collection.find_one({"Name": HWSetName})
-        if hw_set and hw_set["Availability"] >= quantity:
-            self.hw_set_collection.update_one(
-                {"Name": HWSetName}, 
-                {"$inc": {"Availability": -quantity}}
-            )
-            existing_record = self.user_hw_collection.find_one({"UserID": userID, "HWSetName": HWSetName})
-            if existing_record:
-                new_quantity = existing_record["Quantity"] + quantity
-                self.user_hw_collection.update_one(
-                    {"UserID": userID, "HWSetName": HWSetName},
-                    {"$set": {"Quantity": new_quantity}}
-                )
-            else:
-                self.user_hw_collection.insert_one(
-                    {"UserID": userID, "HWSetName": HWSetName, "Quantity": quantity}
-                )
-            return True, "Hardware checked out successfully."
-        return False, "Insufficient availability or hardware set not found."
 
-    def check_in(self, userID, HWSetName, quantity):
-        user_hw = self.user_hw_collection.find_one({"UserID": userID, "HWSetName": HWSetName})
-        if user_hw and user_hw["Quantity"] >= quantity:
-            self.hw_set_collection.update_one(
-                {"Name": HWSetName}, 
-                {"$inc": {"Availability": quantity}}
-            )
-            new_quantity = user_hw["Quantity"] - quantity
-            if new_quantity > 0:
-                self.user_hw_collection.update_one(
-                    {"UserID": userID, "HWSetName": HWSetName},
-                    {"$set": {"Quantity": new_quantity}}
-                )
-            else:
-                self.user_hw_collection.delete_one({"UserID": userID, "HWSetName": HWSetName})
-            return True, "Hardware checked in successfully."
-        return False, "User does not have enough hardware to check in or it was not found."
+    def __init__(self):
+        self.__name = ""
+        self.__capacity = 500
+        self.__availability = 500
+        self.__checked_out = 0
+
+    def initialize(self, thisName, qty):
+        self.__name = thisName
+        self.__capacity = qty
+        self.__availability = qty
+        self.update_database()
+
+    def update(self, thisName, qtyCap, qtyAval):
+        self.__name = thisName
+        self.__capacity = qtyCap
+        self.__availability = qtyAval
+        self.update_database()
+
+    def getAvailability(self):
+        return self.__availability
+
+    def getCapacity(self):
+        return self.__capacity
+
+    def getName(self):
+        return self.__name
+
+    def checkOut(self, qty):
+        if qty > self.__availability:
+            self.__checked_out += self.__availability
+            self.__availability = 0
+            self.update_database()
+            return self.__availability
+        else:
+            self.__availability = 0
+            self.__checked_out = self.__capacity
+            self.update_database()
+            return 0
+
+    def checkIn(self, qty):
+        if self.__availability + qty <= self.__capacity:
+            self.__availability += qty
+            self.__checked_out -= qty
+        else:
+            self.__availability = self.__capacity
+            self.__checked_out = 0
+        self.update_database()
+        return self.__availability
+
+    def get_checkedout_qty(self):
+        return self.__checked_out
+
+    def set_capacity(self, qty):
+        self.__capacity = qty
+        self.update_database()
+
+    def update_database(self):
+        # to access the database w/o certifi add this: &tlsAllowInvalidCertificates=true at the end of url
+        client = MongoClient(
+            "mongodb+srv://Javier:ECE461@cluster0.068zylu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&tlsAllowInvalidCertificates=true")
+
+
+        db = client["Management"]
+        collection = db.HWSet
+        collection.delete_many({'Name': self.__name})
+        hardwareSet = {
+            "Name": self.__name,
+            "Capacity": self.__capacity,
+            "Availability": self.__availability,
+        }
+        collection.insert_one(hardwareSet)
+        client.close()
