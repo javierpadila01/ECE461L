@@ -25,43 +25,55 @@ class HWSet:
                 )
 
     def check_out(self, userID, projectID, HWSetName, quantity):
-        hw_set = self.hw_set_collection.find_one({"Name": HWSetName})
-        if hw_set and hw_set["Availability"] >= quantity:
-            self.hw_set_collection.update_one(
-                {"Name": HWSetName},
-                {"$inc": {"Availability": -quantity}}
+        hw_set = self.hw_set_collection.find_one({"ProjectID": projectID, "Name": HWSetName})
+        if not hw_set:
+            return False, "Hardware set not found."
+    
+        if hw_set["Availability"] < quantity:
+            return False, "Insufficient availability."
+
+        self.hw_set_collection.update_one(
+            {"ProjectID": projectID, "Name": HWSetName},
+            {"$inc": {"Availability": -quantity}}
+        )
+
+        user_hw = self.user_hw_collection.find_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
+        if user_hw:
+            self.user_hw_collection.update_one(
+                {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName},
+                {"$inc": {"Quantity": quantity}}
             )
-            existing_record = self.user_hw_collection.find_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
-            if existing_record:
-                new_quantity = existing_record["Quantity"] + quantity
-                self.user_hw_collection.update_one(
-                    {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName},
-                    {"$set": {"Quantity": new_quantity}}
-                )
-            else:
-                self.user_hw_collection.insert_one(
-                    {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName, "Quantity": quantity}
-                )
-            return True, "Hardware checked out successfully."
-        return False, "Insufficient availability or hardware set not found."
+        else:
+            self.user_hw_collection.insert_one(
+                {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName, "Quantity": quantity}
+            )
+    
+        return True, "Hardware checked out successfully."
+
 
     def check_in(self, userID, projectID, HWSetName, quantity):
         user_hw = self.user_hw_collection.find_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
-        if user_hw and user_hw["Quantity"] >= quantity:
-            self.hw_set_collection.update_one(
-                {"Name": HWSetName},
-                {"$inc": {"Availability": quantity}}
+        if not user_hw or user_hw["Quantity"] < quantity:
+            return False, "User does not have enough hardware to check in."
+
+        hw_set = self.hw_set_collection.find_one({"ProjectID": projectID, "Name": HWSetName})
+        new_availability = min(hw_set["Availability"] + quantity, hw_set["Capacity"])
+        self.hw_set_collection.update_one(
+            {"ProjectID": projectID, "Name": HWSetName},
+            {"$set": {"Availability": new_availability}}
+        )
+
+        new_quantity = user_hw["Quantity"] - quantity
+        if new_quantity > 0:
+            self.user_hw_collection.update_one(
+                {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName},
+                {"$set": {"Quantity": new_quantity}}
             )
-            new_quantity = user_hw["Quantity"] - quantity
-            if new_quantity > 0:
-                self.user_hw_collection.update_one(
-                    {"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName},
-                    {"$set": {"Quantity": new_quantity}}
-                )
-            else:
-                self.user_hw_collection.delete_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
-            return True, "Hardware checked in successfully."
-        return False, "User does not have enough hardware to check in or it was not found."
+        else:
+            self.user_hw_collection.delete_one({"UserID": userID, "ProjectID": projectID, "HWSetName": HWSetName})
+    
+        return True, "Hardware checked in successfully."
+
 
 
     def get_availability_and_capacity_for_project(self, projectID):
