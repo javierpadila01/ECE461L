@@ -46,7 +46,7 @@ def checkout():
 def checkin():
     data = request.json
     success, message = hwset_ops.check_in(data['userID'], data['projectID'], data['HWSetName'], data['quantity'])
-    return jsonify({'message': message}), 200 if success else 404
+    return jsonify({'message': message}), 200 if success else 402
 
 
 @app.route('/availability-capacity', methods=['GET'])

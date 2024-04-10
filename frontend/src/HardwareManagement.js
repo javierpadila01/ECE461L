@@ -53,13 +53,13 @@ function HardwareManagement() {
 
           console.log('userID:', userID);
           console.log('projectID:', projectID);
-          console.log('HWset:', HWset);
+          console.log('HWset:', `HWSet${HWset}`);
           console.log('quantity:', HWset === 1 ? request1 : request2);
 
           const response = await axios.post('/checkin', {
             userID: userID,
             projectID: projectID,
-            HWSetName: HWset,
+            HWSetName: `HWSet${HWset}`,
             quantity: HWset === 1 ? request1 : request2
           });
           
@@ -86,14 +86,14 @@ function HardwareManagement() {
           }
           console.log('userID:', userID);
           console.log('projectID:', projectID);
-          console.log('HWset:', HWset);
+          console.log('HWset:', `HWSet${HWset}`);
           console.log('quantity:', HWset === 1 ? request1 : request2);
 
           const response = await axios.post('/checkout', {
-              userID: userID,
-              projectID: projectID,
-              HWSetName: HWset,
-              quantity: HWset === 1 ? request1 : request2
+            userID: userID,
+            projectID: projectID,
+            HWSetName: `HWSet${HWset}`,
+            quantity: HWset === 1 ? request1 : request2
           });
           
           if (response.status === 201) {

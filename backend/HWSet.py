@@ -29,7 +29,7 @@ class HWSet:
         if not hw_set:
             return False, "Hardware set not found."
     
-        if hw_set["Availability"] < quantity:
+        if int(hw_set["Availability"]) < quantity:
             return False, "Insufficient availability."
 
         self.hw_set_collection.update_one(
