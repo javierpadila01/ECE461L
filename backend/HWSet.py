@@ -65,13 +65,13 @@ class HWSet:
 
 
     def get_availability_and_capacity_for_project(self, projectID):
-        hardware_sets = self.hw_set_collection.find({"ProjectID": projectID})
+        hw_set1 = self.hw_set_collection.find_one({"ProjectID": projectID, "Name": "HWSet1"})
+        hw_set2 = self.hw_set_collection.find_one({"ProjectID": projectID, "Name": "HWSet2"})
+        
         result = []
-        for hw_set in hardware_sets:
-            result.append({
-                "Name": hw_set["Name"],
-                "Availability": hw_set["Availability"],
-                "Capacity": hw_set["Capacity"]
-            })
+        
+        result.extend([hw_set1["Availability"], hw_set1["Capacity"]])
+        result.extend([hw_set2["Availability"], hw_set2["Capacity"]])
+
         return result
 
