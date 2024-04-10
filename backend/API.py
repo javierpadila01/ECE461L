@@ -25,8 +25,7 @@ def signin():
 def create_project():
     data = request.json
     success, message = project_ops.create_project(
-        data['projectID'], data['project_name'], data['description'], data['creator']
-    )
+        data['projectID'], data['project_name'], data['description'])
     return jsonify({'message': message}), 201 if success else 400
 
 @app.route('/joinproject', methods=['POST'])
