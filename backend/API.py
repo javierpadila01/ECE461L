@@ -54,7 +54,12 @@ def get_hardware_availability_capacity_for_project():
     projectID = request.args.get('projectID')
     availability_capacity_info = hwset_ops.get_availability_and_capacity_for_project(projectID)
     if availability_capacity_info:
-        return jsonify({"hardwareSets": availability_capacity_info}), 200
+        return jsonify({
+            "HWSet1 Availability": result[0],
+            "HWSet1 Capacity": result[1],
+            "HWSet2 Availability": result[2],
+            "HWSet2 Capacity": result[3]
+        }), 200
     else:
         return jsonify({"message": "No hardware set found for the specified project"}), 404
 
