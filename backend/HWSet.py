@@ -64,7 +64,7 @@ class HWSet:
         return False, "User does not have enough hardware to check in or it was not found."
 
 
-     def get_availability_and_capacity_for_project(self, projectID):
+    def get_availability_and_capacity_for_project(self, projectID):
         hardware_sets = self.hw_set_collection.find({"ProjectID": projectID})
         result = []
         for hw_set in hardware_sets:

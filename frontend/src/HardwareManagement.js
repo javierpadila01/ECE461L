@@ -23,12 +23,13 @@ function HardwareManagement() {
 
   const fetchData = async () => {
       try {
-          const response = await axios.get(`/fetchHWData/${projectID}`);
-          const { capacity1, available1, capacity2, available2 } = response.data;
-          setCapacity1(capacity1);
-          setAvailable1(available1);
-          setCapacity2(capacity2);
-          setAvailable2(available2);
+          const response = await axios.get('/availability-capacity',
+        {
+          projectID: projectID
+        });
+        const { hardwareSets } = response.data;
+        console.log(hardwareSets);
+          //this guy right here is what I need help with
       } catch (error) {
           console.error('Error fetching HW data:', error);
       }
