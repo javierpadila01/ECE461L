@@ -9,6 +9,21 @@ class HWSet:
         self.hw_set_collection = self.db.HWSet
         self.user_hw_collection = self.db.UserHW
 
+    def initialize_hw_sets_for_project(self, projectID):
+        hw_sets = [{'Name': 'HWSet1', 'Capacity': 500, 'Availability': 500},
+                   {'Name': 'HWSet2', 'Capacity': 500, 'Availability': 500}]
+        
+        for hw_set in hw_sets:
+            existing_set = self.hw_set_collection.find_one({"ProjectID": projectID, "Name": hw_set['Name']})
+            if not existing_set:
+                hw_set['ProjectID'] = projectID
+                self.hw_set_collection.insert_one(hw_set)
+            else:
+                self.hw_set_collection.update_one(
+                    {"ProjectID": projectID, "Name": hw_set['Name']},
+                    {"$set": {"Capacity": hw_set['Capacity'], "Availability": hw_set['Availability']}}
+                )
+
     def check_out(self, userID, projectID, HWSetName, quantity):
         hw_set = self.hw_set_collection.find_one({"Name": HWSetName})
         if hw_set and hw_set["Availability"] >= quantity:
