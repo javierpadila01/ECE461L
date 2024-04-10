@@ -19,10 +19,11 @@ function NewProject() {
         console.log('All fields are required');
         return;
       }
+      navigate('/hardware-management', { state: { userID, projectID } });
       const response = await axios.post('/createproject', {
-        projectName: projectName,
-        description: description,
         projectID: projectID,
+        project_name: projectName,
+        description: description,
       });
       
       if (response.status === 201) {

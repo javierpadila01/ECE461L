@@ -27,7 +27,6 @@ function ExistingProject() {
       } else {
         console.log('Error:', response.data.message);
       }
-    
       //send in project ID, if it does not exist, return the error
       //if it does exist log them in 
 
