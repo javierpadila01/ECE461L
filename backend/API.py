@@ -48,5 +48,13 @@ def checkin():
     success, message = hwset_ops.check_in(data['userID'], data['projectID'], data['HWSetName'], data['quantity'])
     return jsonify({'message': message}), 200 if success else 402
 
+@app.route('/hardware/availability-capacity', methods=['GET'])
+def get_hardware_availability_capacity():
+    availability_capacity_info = hwset_ops.get_availability_and_capacity()
+    if availability_capacity_info:
+        return jsonify({"hardwareSets": availability_capacity_info}), 200
+    else:
+        return jsonify({"message": "No hardware set found"}), 404
+
 if __name__ == '__main__':
     app.run(debug=True)
