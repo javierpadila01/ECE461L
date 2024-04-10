@@ -25,7 +25,9 @@ function HardwareManagement() {
       try {
           const response = await axios.get('/availability-capacity',
         {
-          projectID: projectID
+          params: {
+                projectID: projectID
+            }
         });
         const { hardwareSets } = response.data;
         console.log(hardwareSets);
