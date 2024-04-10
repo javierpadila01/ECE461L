@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useInsertionEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Form from './Forms';
 import './HomePage.css'; 
@@ -17,19 +17,22 @@ function HardwareManagement() {
     const [request1, setRequest1] = useState(null);
     const [request2, setRequest2] = useState(null);
 
-   // when the page gets started, render and fetch the data for the quantities of capacity and available into the 
+  //  when the page gets started, render and fetch the data for the quantities of capacity and available into the 
 
-    const handleCheckIn = async () => {
+    const handleCheckIn = async (HWset) => {
         //pass in userid, projectid, and quantity request
         // if user does not have enough that is the error
         //otherwise update the database with that difference
         try {
-          if (!projectName || !description || !projectID) {
+          if (!request1 && !request2) {
             console.log('All fields are required');
             return;
           }
           const response = await axios.post('/checkin', {
-            //userid, projectid, quantity
+            userid: userID,
+            // projectid: projectID
+            HWSetName: `HWSet${HWset}`,
+            quantity: HWset === 1 ? request1 : request2
           });
           
           if (response.status === 201) {
@@ -44,17 +47,20 @@ function HardwareManagement() {
         }
     };
 
-    const handleCheckOut = async () => {
+    const handleCheckOut = async (HWset) => {
         //pass in userid, projectid, and quantity request
         // if there is not enough capacity, that is the error
         //otherwise update the database for that user to check out that amount
         try {
-          if (!projectName || !description || !projectID) {
+          if (!request1 && !request2) {
             console.log('All fields are required');
             return;
           }
           const response = await axios.post('/checkout', {
-            //userid, projectid, quantity
+              userid: userID,
+              // projectid: projectID
+              HWSetName: `HWSet${HWset}`,
+              quantity: HWset === 1 ? request1 : request2
           });
           
           if (response.status === 201) {
@@ -83,8 +89,8 @@ function HardwareManagement() {
                 <p>Total Capacity: {capacity1}</p>
                 <p>Available: {available1} </p>
                 <Form label="Request" onInputChange={(value) => setRequest1(value)} />
-                <button onClick={handleCheckIn}>Check In</button>
-                <button onClick={handleCheckOut}>Check Out</button>
+                <button onClick={() => handleCheckIn(1)}>Check In</button>
+                <button onClick={() => handleCheckOut(1)}>Check Out</button>
         
         </div>
 
@@ -93,8 +99,8 @@ function HardwareManagement() {
                 <p>Total Capacity: {capacity2} </p>
                 <p>Available: {available2} </p>
                 <Form label="Request" onInputChange={(value) => setRequest2(value)} />
-                <button onClick={handleCheckIn}>Check In</button>
-                <button onClick={handleCheckOut}>Check Out</button>
+                <button onClick={() => handleCheckIn(2)}>Check In</button>
+                <button onClick={() => handleCheckOut(2)}>Check Out</button>
         </div>
         <div className="button-container">
         <button className="nav-button" onClick={handleBackClick}>Back to Project Selection</button>

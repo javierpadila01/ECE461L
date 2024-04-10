@@ -20,9 +20,9 @@ function NewProject() {
         return;
       }
       const response = await axios.post('/createproject', {
-        projectName: projectName,
-        description: description,
         projectID: projectID,
+        project_name: projectName,
+        description: description,
       });
       
       if (response.status === 201) {

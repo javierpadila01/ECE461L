@@ -17,6 +17,7 @@ class User:
         return "".join(chr((ord(char) - 3) % 126) for char in encrypted_password)
 
     def sign_up(self, userid, username, password):
+        print("Hello World")
         if self.user_collection.find_one({'userid': userid}):
             return False, "Username already exists."
         encrypted_password = self.encrypt(password)
@@ -28,3 +29,4 @@ class User:
         if user and self.decrypt(user['password']) == password:
             return True, "Login successful."
         return False, "Invalid userid, username, or password."
+

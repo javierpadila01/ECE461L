@@ -22,7 +22,7 @@ function ExistingUserLogin() {
     password: password,
   });
   
-  if (response.status === 201) {
+  if (response.status === 200) {
     console.log('User signed in successfully');
     navigate('/project-selection', { state: { userID } }); 
 
